@@ -1,0 +1,18 @@
+{
+  "scripts": {
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "ioredis": "^5.11.1",
+    "mysql2": "^3.23.1"
+  },
+  "devDependencies": {
+    "jest": "^30.5.2"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^uuid$": "<rootDir>/__mocks__/uuid.js"
+    }
+  }
+}
