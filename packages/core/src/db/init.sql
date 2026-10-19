@@ -47,26 +47,26 @@ create table if not exists step_executions(
 );
 
 -- It will make faster to query next step of a workflow in order
-CREATE INDEX if not exists idx_steps_workflow_order
-ON workflow_steps(workflow_id, step_order);
+-- CREATE INDEX if not exists idx_steps_workflow_order
+-- ON workflow_steps(workflow_id, step_order);
 
--- It will make faster to query last successful step of a workflow instance
-CREATE INDEX if not exists idx_exec_instance_status_step
-ON step_executions(workflow_instance_id, status, step_name);
+-- -- It will make faster to query last successful step of a workflow instance
+-- CREATE INDEX if not exists idx_exec_instance_status_step
+-- ON step_executions(workflow_instance_id, status, step_name);
 
--- It will make faster to query next attempt of a step execution for a workflow instance and also to mark success or failure of a step execution
-CREATE INDEX if not exists idx_exec_attempt
-ON step_executions(workflow_instance_id, step_name, attempt);
+-- -- It will make faster to query next attempt of a step execution for a workflow instance and also to mark success or failure of a step execution
+-- CREATE INDEX if not exists idx_exec_attempt
+-- ON step_executions(workflow_instance_id, step_name, attempt);
 
--- It will make faster to query running steps of a workflow instance
-CREATE INDEX if not exists idx_exec_running
-ON step_executions(
-workflow_instance_id,
-step_name,
-status,
-created_at
-);
+-- -- It will make faster to query running steps of a workflow instance
+-- CREATE INDEX if not exists idx_exec_running
+-- ON step_executions(
+-- workflow_instance_id,
+-- step_name,
+-- status,
+-- created_at
+-- );
 
--- It will make faster to query resume workflow instances by status
-CREATE INDEX if not exists idx_instances_status
-ON workflow_instances(status);
+-- -- It will make faster to query resume workflow instances by status
+-- CREATE INDEX if not exists idx_instances_status
+-- ON workflow_instances(status);

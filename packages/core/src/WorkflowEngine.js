@@ -6,19 +6,23 @@ const { createWorkflowRepo } = require('./repositories/workflowRepositories');
 const { createStepRepo } = require('./repositories/stepExecutionRepository');
 const { createDashboard } = require('../../dashboard-backend/server/src/server')
 
+const mysql = require("mysql2/promise");
+const { initializeDatabase } = require("./db/mysql");
+
 class WorkflowEngine {
-    constructor({ db, redis, executors = {}, worker = {}, retry = {}, port = 8000, frontendPort = 5173 }) {
-        if (!db) {
-            throw new Error("Database connection required");
+    constructor({ dbConfig, redis, executors = {}, worker = {}, retry = {}, port = 8000, frontendPort = 5173 }) {
+        if (!dbConfig) {
+            throw new Error("Database configuration required");
         }
+        this.dbConfig = dbConfig;
         if (!redis) {
             throw new Error("Redis connection required");
         }
-        this.db = db;
+        this.db = mysql.createPool(this.dbConfig);
         this.redis = redis;
 
-        this.workflowRepo = createWorkflowRepo(db);
-        this.stepRepo = createStepRepo(db);
+        this.workflowRepo = createWorkflowRepo(this.db);
+        this.stepRepo = createStepRepo(this.db);
 
         this.queue = null;
         this.executors = executors;
@@ -42,69 +46,80 @@ class WorkflowEngine {
         });
     }
 
-    async start() {
 
+    async start() {
         if (this.worker) {
             throw new Error("Workflow Engine is already running.");
         }
 
-        this.queue = createQueue({
-            redis: this.redis
-        });
+        try {
+            await initializeDatabase(this.dbConfig, this.db);
 
-        this.workflowExecutor = createWorkflowExecutor({
-            workflowRepo: this.workflowRepo,
-            stepRepo: this.stepRepo,
-            queue: this.queue,
-            executors: this.executors,
-            retry: this.config.retry
-        });
+            this.queue = createQueue({
+                redis: this.redis
+            });
 
-        this.worker = await createWorker({
-            redis: this.redis,
-            executeWorkflow: this.workflowExecutor.executeWorkflow,
-            concurrency: this.config.worker.concurrency,
-        });
+            this.workflowExecutor = createWorkflowExecutor({
+                workflowRepo: this.workflowRepo,
+                stepRepo: this.stepRepo,
+                queue: this.queue,
+                executors: this.executors,
+                retry: this.config.retry
+            });
 
-        await this.dashboard.start();
+            this.worker = await createWorker({
+                redis: this.redis,
+                executeWorkflow: this.workflowExecutor.executeWorkflow,
+                concurrency: this.config.worker.concurrency
+            });
 
-        await resumeWorkflows({
-            workflowRepo: this.workflowRepo,
-            queue: this.queue
-        });
+            await this.dashboard.start();
 
-        setTimeout(async () => {
             await resumeWorkflows({
                 workflowRepo: this.workflowRepo,
                 queue: this.queue
             });
-            console.log("Resumed workflows after 100 seconds");
-        }, 100000);
 
-        console.log("Workflow Engine started");
+            console.log("Workflow Engine started");
+        } catch (err) {
+            // Clean up anything that started successfully.
+            if (this.worker) {
+                await this.worker.close().catch(() => { });
+                this.worker = null;
+            }
+
+            if (this.queue) {
+                await this.queue.close().catch(() => { });
+                this.queue = null;
+            }
+
+            if (this.dashboard) {
+                await this.dashboard.close().catch(() => { });
+            }
+
+            throw err;
+        }
     }
 
-    async stop() {
-        if (!this.worker) {
-            return;
-        }
 
+    async stop() {
         if (this.worker) {
             await this.worker.close();
+            this.worker = null;
             console.log("Workflow Engine stopped");
         }
+
         if (this.queue) {
             await this.queue.close();
+            this.queue = null;
             console.log("Queue closed");
         }
+
         if (this.dashboard) {
             await this.dashboard.close();
             console.log("Dashboard closed");
         }
-
-        this.worker = null;
-        this.queue = null;
-    };
+    }
 
     status() {
         return {
