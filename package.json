@@ -1,10 +1,10 @@
 {
-  "name": "workflow-engine",
+  "name": "zeninflow",
   "version": "1.0.0",
-  "description": "A Node.js workflow engine with dashboard",
+  "description": "A Node.js workflow engine with a dashboard for workflow orchestration, execution, and recovery",
   "main": "packages/core/src/index.js",
   "bin": {
-    "workflow-engine-dashboard": "bin/workflow-engine-dashboard.js"
+    "zeninflow-dashboard": "bin/workflow-engine-dashboard.js"
   },
   "dependencies": {
     "bullmq": "^5.80.9",

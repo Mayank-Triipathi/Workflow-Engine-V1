@@ -26,6 +26,7 @@ class WorkflowEngine {
 
         this.queue = null;
         this.executors = executors;
+        this.recoveryTimer = null;
 
         this.config = {
             worker: {
@@ -79,6 +80,20 @@ class WorkflowEngine {
                 workflowRepo: this.workflowRepo,
                 queue: this.queue
             });
+            
+            console.log("Scheduling recovery of workflows that were in progress before the engine started (in 100 seconds)...");
+            this.recoveryTimer = setTimeout(async () => {
+                try {
+                    if (!this.worker || !this.queue) return;
+                    console.log("Performing delayed recovery of workflows...");
+                    await resumeWorkflows({
+                        workflowRepo: this.workflowRepo,
+                        queue: this.queue
+                    });
+                } catch (err) {
+                    console.error("Delayed recovery failed:", err);
+                }
+            }, 100000);
 
             console.log("Workflow Engine started");
         } catch (err) {
@@ -103,6 +118,11 @@ class WorkflowEngine {
 
 
     async stop() {
+
+        if (this.recoveryTimer) {
+            clearTimeout(this.recoveryTimer);
+            this.recoveryTimer = null;
+        }
         if (this.worker) {
             await this.worker.close();
             this.worker = null;
