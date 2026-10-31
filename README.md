@@ -38,8 +38,8 @@ Built using Node.js, MySQL, Redis, and BullMQ, ZenInFlow provides a modular arch
 
 ZenInFlow follows a modular architecture in which workflow management, job scheduling, execution, and persistence are handled by separate components.
 
-```mermaid
-<img width="724" height="445" alt="image" src="https://github.com/user-attachments/assets/fa3d659e-632d-4a77-a9f6-780a2e9f3cce" />
+<img width="667" height="437" alt="image" src="https://github.com/user-attachments/assets/41a5e34c-9c56-4b95-aac0-2f6c2f5a22d8" />
+
 
 
 ### Core Components
