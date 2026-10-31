@@ -3,6 +3,7 @@ const { Queue } = require("bullmq");
 const createQueue = (redis) => {
 
     const queue = new Queue("workflowQueue", {
+        
         connection: redis
     });
 

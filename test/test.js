@@ -14,9 +14,9 @@ async function main() {
         console.log("✅ Workflow Engine started");
         console.log(engine.status());
 
-        // await engine.trigger("Basic Success", {
-        //     userId: 100
-        // });
+        await engine.trigger("Basic Success", {
+            userId: 100
+        });
     } catch (err) {
         console.error(err);
     }

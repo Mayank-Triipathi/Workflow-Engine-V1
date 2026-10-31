@@ -56,9 +56,7 @@ class WorkflowEngine {
         try {
             await initializeDatabase(this.dbConfig, this.db);
 
-            this.queue = createQueue({
-                redis: this.redis
-            });
+            this.queue = createQueue(this.redis);
 
             this.workflowExecutor = createWorkflowExecutor({
                 workflowRepo: this.workflowRepo,
