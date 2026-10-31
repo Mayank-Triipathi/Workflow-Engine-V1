@@ -1,6 +1,6 @@
 {
   "name": "zeninflow",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Node.js workflow engine with a dashboard for workflow orchestration, execution, and recovery",
   "main": "packages/core/src/index.js",
   "bin": {
