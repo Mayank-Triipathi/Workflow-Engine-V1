@@ -541,7 +541,7 @@ Contributions, bug reports, and feature suggestions are welcome.
 
 # License
 
-Add your project's chosen license here and include the corresponding `LICENSE` file in the repository.
+Copyright (c) 2026 Mayank Tripathi
 
 ---
 
