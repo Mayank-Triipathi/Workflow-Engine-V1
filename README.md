@@ -1,13 +1,21 @@
 # ZenInFlow
 
-<p align="center">
-
 **A Dynamic Workflow Orchestration Engine Built with Node.js**
 
 Create, execute, monitor, and recover custom workflows through a visual dashboard and a distributed worker architecture.
 
+<p align="center">
+  <a href="https://www.npmjs.com/package/zeninflow">
+    <img src="https://img.shields.io/npm/v/zeninflow" alt="npm version">
+  </a>
+  <a href="https://www.npmjs.com/package/zeninflow">
+    <img src="https://img.shields.io/npm/dt/zeninflow" alt="npm downloads">
+  </a>
 </p>
 
+**Install:**
+```bash
+npm install zeninflow
 ---
 
 ## Overview
