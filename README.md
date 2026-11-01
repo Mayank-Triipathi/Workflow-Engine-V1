@@ -163,7 +163,6 @@ ZenInFlow follows a modular architecture in which workflow management, job sched
 | React.js | Dashboard frontend |
 | Vite | Frontend development and build |
 | Tailwind CSS | Dashboard styling |
-| Docker | Infrastructure management |
 
 ---
 
@@ -177,8 +176,6 @@ Before using ZenInFlow, make sure you have:
 - npm installed.
 - A running MySQL instance.
 - A running Redis instance.
-
-Docker can be used to run the required infrastructure locally.
 
 ## 2. Installation
 
