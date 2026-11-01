@@ -14,8 +14,12 @@ Create, execute, monitor, and recover custom workflows through a visual dashboar
 </p>
 
 **Install:**
+
 ```bash
 npm install zeninflow
+```
+
+---
 
 ## Overview
 
