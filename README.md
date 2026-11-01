@@ -20,6 +20,88 @@ Developers define workflows through a visual dashboard, register their own execu
 
 Built using Node.js, MySQL, Redis, and BullMQ, ZenInFlow provides a modular architecture for executing multi-step workflows reliably.
 
+## Use Cases
+
+ZenInFlow is designed for applications that involve multiple dependent operations, background processing, or long-running business workflows.
+
+Instead of manually managing execution order, retries, and workflow state, developers can define workflows through the dashboard and implement their business logic using custom executors.
+
+### 1. E-commerce Order Processing
+
+Automate multi-step order processing by breaking business operations into individual workflow steps.
+
+**Example workflow:**
+
+<img width="216" height="359" alt="image" src="https://github.com/user-attachments/assets/1e8720d6-3383-445e-8e66-a665b8063e57" />
+
+
+If an operation fails, ZenInFlow can retry the failed step without requiring the entire workflow to be manually restarted.
+
+### 2. Data Processing Pipelines
+
+Build sequential data processing pipelines where each step consumes or builds upon the outputs of previous steps.
+
+**Example workflow:**
+
+<img width="162" height="279" alt="image" src="https://github.com/user-attachments/assets/de011ed3-5139-4762-bfde-33a00c9f4a49" />
+
+
+Developers can implement each processing operation as an independent executor while ZenInFlow manages step progression and execution state.
+
+### 3. Background Task Automation
+
+Execute resource-intensive or time-consuming operations asynchronously without blocking the main application flow.
+
+**Examples:**
+- Sending emails and notifications.
+- Generating reports.
+- Processing uploaded files.
+- Performing multi-step background operations.
+
+BullMQ and Redis handle asynchronous job scheduling, while dedicated workers execute the tasks.
+
+### 4. Multi-step API Integrations
+
+Coordinate operations across multiple external services through a sequence of independent executors.
+
+**Example workflow:**
+
+<img width="220" height="282" alt="image" src="https://github.com/user-attachments/assets/4e7de95d-14fd-4934-91a9-bd9a35c071ce" />
+
+
+Each operation can be implemented independently, making integrations easier to organize and maintain.
+
+### 5. Long-running Business Processes
+
+Manage business processes consisting of multiple steps that may take considerable time to complete.
+
+**Examples:**
+- Document approval processes.
+- Employee onboarding.
+- Account verification.
+- Multi-stage application processing.
+
+With persistent execution state and recovery mechanisms, eligible workflows can resume after unexpected interruptions.
+
+---
+
+## Why ZenInFlow?
+
+Traditional applications often require developers to implement workflow orchestration, execution tracking, background processing, and recovery mechanisms themselves.
+
+ZenInFlow brings these responsibilities together.
+
+| Without ZenInFlow | With ZenInFlow |
+|---|---|
+| Manually coordinate multiple operations | Define workflows through a dashboard |
+| Implement custom execution orchestration | Use a dedicated workflow engine |
+| Maintain execution state manually | Persist workflow and step execution states |
+| Build background job processing separately | Use BullMQ and Redis |
+| Build monitoring interfaces separately | Use the included dashboard |
+| Handle interrupted executions manually | Use workflow recovery mechanisms |
+
+**ZenInFlow aims to simplify workflow orchestration so developers can focus on implementing business logic rather than managing the entire execution lifecycle.**
+
 ## Features
 
 - **Dynamic Workflow Creation:** Create and configure workflows through a visual dashboard.
